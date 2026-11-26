@@ -1,0 +1,507 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BB DARK TEAM - Toast Smali Maker Pro</title>
+
+    <style>
+        * { box-sizing: border-box; transition: all 0.3s ease; }
+
+        body {
+            background-color: transparent;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #eeeeee;
+        }
+
+        .container {
+            background: rgba(26, 26, 26, 0.72);
+            backdrop-filter: blur(1px);
+            -webkit-backdrop-filter: blur(1px);
+
+            width: 92%;
+            max-width: 420px;
+            padding: 25px;
+            border-radius: 28px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.12);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #ff6700, #e65c00);
+            color: white;
+            padding: 22px;
+            border-radius: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 20px rgba(255, 103, 0, 0.3);
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            font-weight: 800;
+        }
+
+        .header p {
+            margin: 5px 0 0;
+            font-size: 11px;
+            opacity: 0.8;
+            letter-spacing: 1px;
+        }
+
+        .input-group {
+            margin-bottom: 22px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #999;
+            font-size: 13px;
+            padding-left: 5px;
+        }
+
+        input {
+            width: 100%;
+            padding: 16px;
+            border: 2px solid #2a2a2a;
+            border-radius: 16px;
+            font-size: 16px;
+            outline: none;
+            background: rgba(37,37,37,0.85);
+            color: #ffffff;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        input:focus {
+            border-color: #ff6700;
+            background: rgba(45,45,45,0.9);
+            box-shadow: 0 0 10px rgba(255, 103, 0, 0.2);
+        }
+
+        .button-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-convert {
+            background: #ff6700;
+            color: white;
+        }
+
+        .btn-test {
+            background: #2e7d32;
+            color: white;
+        }
+
+        .btn-copy {
+            background: #3d3d3d;
+            color: white;
+        }
+
+        button:active {
+            transform: scale(0.95);
+            opacity: 0.9;
+        }
+
+        .output-box {
+            margin-top: 25px;
+            background: rgba(0,0,0,0.88);
+            color: #39ff14;
+            padding: 18px;
+            border-radius: 18px;
+            text-align: left;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 12.5px;
+            line-height: 1.5;
+            overflow-x: auto;
+            border: 1px solid #333;
+            border-left: 5px solid #ff6700;
+            white-space: pre-wrap;
+            min-height: 120px;
+        }
+
+        .footer-text {
+            font-size: 10px;
+            color: #999;
+            margin-top: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+        <h1>SB DARK TEAM</h1>
+        <p>SMALI LAB • DARK EDITION PRO</p>
+    </div>
+
+    <div class="input-group">
+        <label>ENTER TOAST MESSAGE</label>
+        <input type="text" id="msgInput" placeholder="Type your message here...">
+    </div>
+
+    <div class="button-stack">
+        <button class="btn-convert" onclick="generateSmali()">⚡ Convert to Smali</button>
+        <button class="btn-test" onclick="testToast()">🔔 Test Toast</button>
+        <button class="btn-copy" onclick="copyCode()">📋 Copy Smali</button>
+    </div>
+
+    <div class="output-box" id="output"># Smali code will appear here...</div>
+
+    <div class="footer-text">Developed by SB DARK CYBER 2.5 officials team © 2026</div>
+
+</div>
+
+<script>
+    // ১. স্মালি কোড জেনারেটর
+    function generateSmali() {
+
+        const msg = document.getElementById('msgInput').value || "Hello from MI TEAM!";
+
+        const smali = `# ==============================
+# CODED BY :: SB DARK TEAM
+# MODE : UNIVERSAL SMALI
+# ==============================
+
+const/4 v0, 0x1
+const-string v1, "${msg}"
+
+# Create Toast
+invoke-static {p0, v1, v0}, Landroid/widget/Toast;->makeText(Landroid/content/Context;Ljava/lang/CharSequence;I)Landroid/widget/Toast;
+
+move-result-object v0
+
+# Show Toast
+invoke-virtual {v0}, Landroid/widget/Toast;->show()V`;
+
+        document.getElementById('output').textContent = smali;
+
+        if (navigator.vibrate) {
+            navigator.vibrate(50);
+        }
+    }
+
+    // ২. টোস্ট টেস্ট
+    function testToast() {
+
+        const msg = document.getElementById('msgInput').value || "Hello from MI TEAM!";
+
+        alert(msg);
+    }
+
+    // ৩. কপি ফাংশন
+    function copyCode() {
+
+        const code = document.getElementById('output').textContent;
+
+        if(code.includes("#")) {
+
+            const tempInput = document.createElement("textarea");
+
+            tempInput.value = code;
+
+            document.body.appendChild(tempInput);
+
+            tempInput.select();
+
+            document.execCommand("copy");
+
+            document.body.removeChild(tempInput);
+
+            alert("Smali Code Copied!");
+
+        } else {
+
+            alert("Please generate code first!");
+        }
+    }
+</script>
+
+<!-- =========================================
+     BAIJID MATRIX BACKGROUND EFFECT
+========================================= -->
+
+<div id="md-baijid-background">
+
+    <div id="md-baijid-matrix"></div>
+
+    <div id="md-baijid-names">
+
+        <div class="md-baijid-name" style="left:6%;animation-duration:12s;animation-delay:-2s;">MDBAIJID</div>
+        <div class="md-baijid-name" style="left:44%;animation-duration:14s;animation-delay:-7s;">mdbaijid</div>
+        <div class="md-baijid-name" style="left:82%;animation-duration:13s;animation-delay:-10s;">mdBaijiD</div>
+        <div class="md-baijid-name" style="left:25%;animation-duration:15s;animation-delay:-5s;">MDBAIJID</div>
+        <div class="md-baijid-name" style="left:63%;animation-duration:12s;animation-delay:-10s;">@baijid</div>
+        <div class="md-baijid-name" style="left:90%;animation-duration:16s;animation-delay:-14s;">BAIJID</div>
+        <div class="md-baijid-name" style="left:14%;animation-duration:13s;animation-delay:-8s;">DARKCYBER</div>
+        <div class="md-baijid-name" style="left:55%;animation-duration:15s;animation-delay:-3s;">dark</div>
+        <div class="md-baijid-name" style="left:74%;animation-duration:11s;animation-delay:-9s;">DARK</div>
+        <div class="md-baijid-name" style="left:35%;animation-duration:16s;animation-delay:-11s;">CyBeR</div>
+        <div class="md-baijid-name" style="left:68%;animation-duration:13s;animation-delay:-5s;">CyBer</div>
+        <div class="md-baijid-name" style="left:20%;animation-duration:14s;animation-delay:-12s;">CYBER</div>
+
+    </div>
+</div>
+
+<style>
+
+html, body {
+    background: transparent !important;
+}
+
+#md-baijid-background {
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    overflow: hidden !important;
+    background: #050a14 !important;
+    pointer-events: none !important;
+    z-index: -1 !important;
+}
+
+#md-baijid-matrix {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #050a14;
+    z-index: 1;
+}
+
+#md-baijid-matrix .md-baijid-rain {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+#md-baijid-matrix .md-baijid-track {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    transform: translate3d(0,-50%,0);
+    animation: mdBaijidMatrixDown linear infinite;
+    will-change: transform;
+    backface-visibility: hidden;
+}
+
+@keyframes mdBaijidMatrixDown {
+    from { transform: translate3d(0,-50%,0); }
+    to { transform: translate3d(0,0,0); }
+}
+
+#md-baijid-matrix .md-baijid-stream {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    flex-shrink: 0;
+}
+
+#md-baijid-matrix .md-baijid-stream span {
+    display: block;
+    height: 22px;
+    line-height: 22px;
+    font-size: 17px;
+    font-weight: 600;
+    text-align: center;
+    white-space: nowrap;
+    color: rgba(57,255,136,.58);
+    text-shadow:
+        0 0 2px rgba(57,255,136,.40),
+        0 0 5px rgba(57,255,136,.12);
+    flex-shrink: 0;
+}
+
+#md-baijid-matrix .md-baijid-stream span:nth-child(3n) { opacity: .82; }
+#md-baijid-matrix .md-baijid-stream span:nth-child(5n) { opacity: .70; }
+#md-baijid-matrix .md-baijid-stream span:nth-child(7n) { opacity: .56; }
+#md-baijid-matrix .md-baijid-stream span:nth-child(11n) { opacity: .44; }
+#md-baijid-matrix .md-baijid-stream span:nth-child(17n) { opacity: .32; }
+
+#md-baijid-names {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 5;
+}
+
+#md-baijid-names .md-baijid-name {
+    position: absolute;
+    color: #7affaa;
+    font-family: monospace;
+    font-size: 19px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    white-space: nowrap;
+    opacity: 0;
+    text-shadow:
+        0 0 4px #7affaa,
+        0 0 9px #39ff88,
+        0 0 15px rgba(57,255,136,.60);
+    animation: mdBaijidNameDown linear infinite;
+    will-change: transform, opacity;
+}
+
+@keyframes mdBaijidNameDown {
+    0% {
+        transform: translate3d(0,-80px,0);
+        opacity: 0;
+    }
+    7% { opacity: 1; }
+    50% { opacity: 1; }
+    90% { opacity: .92; }
+    100% {
+        transform: translate3d(0,calc(100vh + 80px),0);
+        opacity: 0;
+    }
+}
+
+@media(max-width:480px) {
+    #md-baijid-names .md-baijid-name {
+        font-size: 17px;
+    }
+}
+
+</style>
+
+<script>
+(function() {
+
+    "use strict";
+
+    var matrix = document.getElementById("md-baijid-matrix");
+
+    if (!matrix || matrix.dataset.started === "true") {
+        return;
+    }
+
+    matrix.dataset.started = "true";
+
+    var columnWidth = 30;
+    var lineHeight = 22;
+
+    function createStream() {
+
+        var stream = document.createElement("div");
+
+        stream.className = "md-baijid-stream";
+
+        var count = Math.ceil(
+            window.innerHeight / lineHeight
+        ) + 20;
+
+        var chars = "12345678900000000000aabcdkacskvslvjsjkshbskbsjksvjakvjwhs";
+
+        for (var i = 0; i < count; i++) {
+
+            var span = document.createElement("span");
+
+            span.textContent = chars.charAt(
+                Math.floor(Math.random() * chars.length)
+            );
+
+            stream.appendChild(span);
+        }
+
+        return stream;
+    }
+
+    function createMatrix() {
+
+        matrix.innerHTML = "";
+
+        var columns = Math.ceil(
+            window.innerWidth / columnWidth
+        );
+
+        for (var i = 0; i < columns; i++) {
+
+            var rain = document.createElement("div");
+
+            rain.className = "md-baijid-rain";
+
+            rain.style.left = (i * columnWidth) + "px";
+            rain.style.width = columnWidth + "px";
+
+            var stream1 = createStream();
+            var stream2 = stream1.cloneNode(true);
+
+            var track = document.createElement("div");
+
+            track.className = "md-baijid-track";
+
+            track.appendChild(stream1);
+            track.appendChild(stream2);
+
+            var duration = 6.2 + Math.random() * 2.4;
+
+            track.style.animationDuration = duration + "s";
+
+            track.style.animationDelay =
+                (-Math.random() * duration) + "s";
+
+            rain.appendChild(track);
+
+            matrix.appendChild(rain);
+        }
+    }
+
+    createMatrix();
+
+    var resizeTimer = null;
+
+    window.addEventListener("resize", function() {
+
+        clearTimeout(resizeTimer);
+
+        resizeTimer = setTimeout(function() {
+            createMatrix();
+        }, 250);
+
+    });
+
+})();
+</script>
+
+</body>
+</html>
